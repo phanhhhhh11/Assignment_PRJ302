@@ -24,6 +24,8 @@
             min-height:670px;
             border-radius: 25px;
             position:relative;
+            background: url('<%= request.getContextPath() %>/Image/Banner3.jpg') no-repeat center center;;
+            background-size: cover;
             box-shadow:0 12px 15px 0 rgb(17, 45, 78),0 17px 50px 0 rgba(0,0,0,.19);
         }
         .login-html{

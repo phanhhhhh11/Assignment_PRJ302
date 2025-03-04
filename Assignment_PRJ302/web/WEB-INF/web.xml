@@ -12,6 +12,10 @@
         <servlet-name>Dashboard</servlet-name>
         <jsp-file>/View/Dashboard.jsp</jsp-file>
     </servlet>
+    <servlet>
+        <servlet-name>AbsenceForm</servlet-name>
+        <jsp-file>/View/AbsenceForm.jsp</jsp-file>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Approval</servlet-name>
         <url-pattern>/View/Approval.jsp</url-pattern>
@@ -23,5 +27,9 @@
     <servlet-mapping>
         <servlet-name>Dashboard</servlet-name>
         <url-pattern>/Dashboard</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AbsenceForm</servlet-name>
+        <url-pattern>/Create</url-pattern>
     </servlet-mapping>
 </web-app>

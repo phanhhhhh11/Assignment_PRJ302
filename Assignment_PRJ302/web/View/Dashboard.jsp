@@ -49,16 +49,17 @@
 
         .grid {
             display: flex;
-    justify-content: center; /* Căn giữa theo chiều ngang */
-    align-items: center; /* Căn giữa theo chiều dọc (nếu cần) */
-    flex-wrap: wrap; /* Để các phần tử tự xuống dòng khi không đủ chỗ */
-    width: 90%; /* Độ rộng phù hợp */
-    max-width: 1200px; /* Giới hạn tối đa */
-    margin: auto;
-    gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            width: 100%;
+            max-width: 80%;
+            margin: auto;
+            gap: 20px;
+            align-items: stretch;
+            position: relative;
+            top: -100px;
         }
         .card {
-            transform: translate(-50%, -30%);
             background: #3F72AF;
             padding: 30px;
             border-radius: 8px;
