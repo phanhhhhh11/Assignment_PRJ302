@@ -15,6 +15,7 @@
 --%>
 <!DOCTYPE html>
 <html>
+    <title>Dashboard</title>
     <style>
         body {
             font-family: Inter , sans-serif;

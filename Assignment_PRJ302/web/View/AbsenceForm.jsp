@@ -100,6 +100,9 @@
                     <label class="formbold-form-label" for="evidence">Evidence (optional)</label>
                     <input type="file" name="evidence" id="evidence" class="formbold-form-input">
                     
+                    <label class="formbold-form-label" for="name">Owner</label>
+                    <input type="text" name="Owner" id="Owner" class="formbold-form-input" required>
+                    
                     <button class="formbold-btn" type="submit">Submit Request</button>
                 </form>
             </div>

@@ -34,7 +34,7 @@
             position:absolute;
             border-radius: 25px;
             padding:90px 70px 50px 70px;
-            background:rgba(40,57,101,.9);
+            background:rgba(44,44,44,.9);
         }
 
         .login-form .group .label,
@@ -61,7 +61,7 @@
             font-size:12px;
         }
         .login-form .group .button{
-            background:#1161ee;
+            background:#5c5c5c;
         }
 
         .hr{
@@ -77,6 +77,7 @@
     <title>Login</title>
 </head>
 <body>
+    <form action="Login" method="POST">
     <div class="login-wrap">
         <div class="login-html">
             <h1 style="color: white">Login</h1>
@@ -84,11 +85,11 @@
                 <div class="sign-in-htm">
                     <div class="group">
                         <label for="user" class="label">Username</label>
-                        <input id="user" type="text" class="input">
+                        <input id="user" type="text" class="input" name="userID">
                     </div>
                     <div class="group">
                         <label for="pass" class="label">Password</label>
-                        <input id="pass" type="password" class="input" data-type="password">
+                        <input id="pass" type="password" class="input" name="password" data-type="password">
                     </div>
                     <div class="hr"></div>
                     <div class="group">
@@ -98,5 +99,6 @@
             </div>
         </div>
     </div>
+    </form>
 </body>
 </html>

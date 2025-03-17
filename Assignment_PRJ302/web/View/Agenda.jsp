@@ -11,7 +11,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agenda Nhân Sự</title>
+    <title>Agenda</title>
     <style>
         body {
             font-family: "Poppins", sans-serif;
@@ -111,7 +111,7 @@
 </head>
 <body>
     <div class="container">
-        <h2>Agenda Nhân Sự</h2>
+        <h2>Agenda</h2>
         <label>Start Date: <input type="date" id="startDate"></label>
         <label>End Date: <input type="date" id="endDate"></label>
         <button onclick="fetchData()">Load Data</button>

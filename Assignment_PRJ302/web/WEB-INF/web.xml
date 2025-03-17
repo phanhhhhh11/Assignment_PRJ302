@@ -6,7 +6,7 @@
     </servlet>
     <servlet>
         <servlet-name>Login</servlet-name>
-        <jsp-file>/View/login.jsp</jsp-file>
+        <servlet-class>controller.authentication.LogginController</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>Dashboard</servlet-name>
