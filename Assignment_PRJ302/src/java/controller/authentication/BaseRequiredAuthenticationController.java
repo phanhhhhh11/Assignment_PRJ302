@@ -38,7 +38,7 @@ public abstract class BaseRequiredAuthenticationController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         User u = getLoggedUser(req);
-        if (u != null) {
+        if ((u != null) & isAllowedAccess(u, req)) {
             doGet(req, resp, u);
         } else {
             resp.getWriter().println("Access denied");
@@ -48,7 +48,7 @@ public abstract class BaseRequiredAuthenticationController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         User u = getLoggedUser(req);
-        if (u != null) {
+        if ((u != null)& isAllowedAccess(u, req)) {
             doPost(req, resp, u);
         } else {
             resp.getWriter().println("Access denied");

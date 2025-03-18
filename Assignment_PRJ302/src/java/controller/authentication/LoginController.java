@@ -21,7 +21,7 @@ import java.io.*;
  *
  * @author Phanh
  */
-public class LogginController extends HttpServlet{
+public class LoginController extends HttpServlet{
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -37,8 +37,7 @@ public class LogginController extends HttpServlet{
             resp.addCookie(c_user);
             resp.sendRedirect("Dashboard");
         } else {
-            resp.getWriter().println("null");
-            resp.getWriter().println("Access Denied!");
+            resp.sendRedirect("View/Noti/LoginFailed.html");
         }
     }
 

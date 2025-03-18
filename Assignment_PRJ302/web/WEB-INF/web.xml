@@ -6,19 +6,19 @@
     </servlet>
     <servlet>
         <servlet-name>Login</servlet-name>
-        <servlet-class>controller.authentication.LogginController</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>Dashboard</servlet-name>
-        <jsp-file>/View/Dashboard.jsp</jsp-file>
+        <servlet-class>controller.authentication.LoginController</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>AbsenceForm</servlet-name>
-        <jsp-file>/View/AbsenceForm.jsp</jsp-file>
+        <servlet-class>controller.leaveabsence.CreateLeaveAbsence</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>Agenda</servlet-name>
         <jsp-file>/View/Agenda.jsp</jsp-file>
+    </servlet>
+    <servlet>
+        <servlet-name>Dashboard</servlet-name>
+        <servlet-class>controller.dashboard.Dashboard</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Approval</servlet-name>
@@ -29,15 +29,15 @@
         <url-pattern>/Login</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>Dashboard</servlet-name>
-        <url-pattern>/Dashboard</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>AbsenceForm</servlet-name>
         <url-pattern>/Create</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>Agenda</servlet-name>
         <url-pattern>/Agenda</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Dashboard</servlet-name>
+        <url-pattern>/Dashboard</url-pattern>
     </servlet-mapping>
 </web-app>

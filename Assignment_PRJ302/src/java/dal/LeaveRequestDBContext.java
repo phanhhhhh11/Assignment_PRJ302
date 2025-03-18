@@ -2,8 +2,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-
 package dal;
+
 import java.sql.*;
 import java.sql.Date;
 import Model.LeaveRequest;
@@ -14,11 +14,14 @@ import java.sql.SQLException;
 import Model.LeaveRequest;
 import Model.Employee;
 import Model.LeaveType;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author Phanh
  */
-public class LeaveRequestDBContext extends DBContext<LeaveRequest>{
+public class LeaveRequestDBContext extends DBContext<LeaveRequest> {
 
     @Override
     public ArrayList<LeaveRequest> list() {
@@ -34,10 +37,10 @@ public class LeaveRequestDBContext extends DBContext<LeaveRequest>{
     public void insert(LeaveRequest model) {
         try {
             connection.setAutoCommit(false);
-            String sql = "INSERT INTO LeaveRequest (title, reason, [from], [to], [status], createdby, createddate, owner_eid, leaveTypeID) " +
-                     "VALUES (?, ?, ?, ?, ?, ?, GETDATE(), ?, ?)";
+            String sql = "INSERT INTO LeaveRequest (title, reason, [from], [to], [status], createdby, createddate, owner_eid, leaveTypeID) "
+                    + "VALUES (?, ?, ?, ?, ?, ?, GETDATE(), ?, ?)";
             PreparedStatement stm = connection.prepareStatement(sql);
-            
+
             stm.setString(1, model.getTitle());
             stm.setString(2, model.getReason());
             stm.setDate(3, new java.sql.Date(model.getFrom().getTime()));
@@ -47,17 +50,18 @@ public class LeaveRequestDBContext extends DBContext<LeaveRequest>{
             stm.setInt(7, model.getOwnerEid().getId());
             stm.setInt(8, model.getLeaveTypeID().getLeaveTypeID());
             stm.executeUpdate();
-            
+
             String sql_getid = "SELECT @@IDENTITY as lrid";
             PreparedStatement stm_getid = connection.prepareStatement(sql_getid);
             ResultSet rs = stm_getid.executeQuery();
             if (rs.next()) {
                 model.setId(rs.getInt("lrid"));
             }
-            
+
             connection.commit();
         } catch (SQLException ex) {
-            
+            Logger.getLogger(LeaveRequestDBContext.class.getName()).log(Level.SEVERE, null, ex);
+
         }
     }
 
