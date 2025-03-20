@@ -1,12 +1,10 @@
-<%-- 
-    Document   : request_form
-    Created on : Mar 4, 2025, 8:33:43 PM
-    Author     : Phanh
---%>
+
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
+
+
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -51,13 +49,13 @@
                 margin-bottom: 15px;
                 font-family: "Poppins", sans-serif;
             }
-            
+
             .formbold-form-label {
                 color: #07074D;
                 font-size: 14px;
                 display: block;
                 margin-bottom: 5px;
-                
+
             }
 
             .formbold-btn {
@@ -95,37 +93,36 @@
     <body>
         <div class="formbold-main-wrapper">
             <div class="formbold-form-wrapper">
-                <form action="Create" method="POST" enctype="multipart/form-data">
+                <form action="Create" method="POST">
                     <label class="formbold-form-label" for="title">Title</label>
                     <input type="text" name="title" id="title" class="formbold-form-input" required placeholder="e.g. Annual Leave Request">
 
                     <label class="formbold-form-label" for="reason">Reason</label>
                     <textarea name="reason" id="reason" class="formbold-form-input" required placeholder="Please provide the reason for your leave"></textarea>
 
-                    <label class="formbold-form-label" for="reason">Choose Leave Type</label>
-                    <select name="leaveTypeID" id="leaveTypeID" class="formbold-form-select" required>
-                        <option value="" disabled selected>Select Leave Type</option>
-                        <c:forEach items="${requestScope.leaveTypes}" var="leaveType">
-                            <option value="${leaveType.leaveTypeID}">${leaveType.leaveTypeName}</option>
-                        </c:forEach>
-                    </select>
-                    
-                    <label class="formbold-form-label" for="reason">Choose The Employee</label>
-                    <select name="eid" id="eid" class="formbold-form-select" required >
+
+                    <label class="formbold-form-label" for="from">Start Date</label>
+                    <input type="date" name="from" id="from" class="formbold-form-input" required>
+
+                    <label class="formbold-form-label" for="to">End Date</label>
+                    <input type="date" name="to" id="to" class="formbold-form-input" required>
+
+                    <label class="formbold-form-label" for="eid">Choose The Employee</label>
+                    <select name="eid" id="eid" class="formbold-form-select" required>
                         <option value="" disabled selected>Select Employee</option>
                         <c:forEach items="${requestScope.employees}" var="e">
                             <option value="${e.id}">${e.name}</option>
                         </c:forEach>
                     </select>
-                    
-                    <label class="formbold-form-label" for="start_date">Start Date</label>
-                    <input type="date" name="Start Date" id="start_date" class="formbold-form-input" required>
 
-                    <label class="formbold-form-label" for="end_date">End Date</label>
-                    <input type="date" name="End Date" id="end_date" class="formbold-form-input" required>
 
-                    <label class="formbold-form-label" for="leaveTypeID">Leave Type</label>
-                    
+                    <label class="formbold-form-label" for="leaveTypeID">Choose Leave Type</label>
+                    <select name="ltid" id="ltid" class="formbold-form-select" required>
+                        <option value="" disabled selected>Select Leave Type</option>
+                        <c:forEach items="${requestScope.leaveTypes}" var="leaveType">
+                            <option value="${leaveType.leaveTypeID}">${leaveType.leaveTypeName}</option>
+                        </c:forEach>
+                    </select>
 
                     <button class="formbold-btn" type="submit">Submit Request</button>
                 </form>

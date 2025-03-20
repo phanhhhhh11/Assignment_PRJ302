@@ -2,18 +2,17 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-
 package Model;
 
+import java.sql.*;
 
-import java.lang.*;
-import java.util.*;
-import java.io.*;
+
 /**
  *
  * @author Phanh
  */
-public class LeaveRequest extends BaseModel{
+public class LeaveRequest extends BaseModel {
+
     private int lrid;
     private String title;
     private String reason;
@@ -23,7 +22,7 @@ public class LeaveRequest extends BaseModel{
     private User createdby;
     private Date createddate;
     private Employee ownerEid;
-    private LeaveType leaveTypeID;
+    private LeaveType leaveType;
     private String HRApprove;
     private String SupervisorApprove;
 
@@ -99,12 +98,12 @@ public class LeaveRequest extends BaseModel{
         this.ownerEid = ownerEid;
     }
 
-    public LeaveType getLeaveTypeID() {
-        return leaveTypeID;
+    public LeaveType getLeaveType() {
+        return leaveType;
     }
 
-    public void setLeaveTypeID(LeaveType leaveTypeID) {
-        this.leaveTypeID = leaveTypeID;
+    public void setLeaveTypeID(LeaveType leaveType) {
+        this.leaveType = leaveType;
     }
 
     public String getHRApprove() {
@@ -122,9 +121,6 @@ public class LeaveRequest extends BaseModel{
     public void setSupervisorApprove(String SupervisorApprove) {
         this.SupervisorApprove = SupervisorApprove;
     }
-    
-    
-    
 
-
+    
 }

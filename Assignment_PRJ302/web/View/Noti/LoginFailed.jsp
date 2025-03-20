@@ -1,11 +1,17 @@
+<%-- 
+    Document   : LoginFailed
+    Created on : Mar 19, 2025, 8:42:35 AM
+    Author     : Phanh
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
-<!--
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit this template
--->
 <html>
     <head>
-        <title>TODO supply a title</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Error</title>
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
         <style>
@@ -54,7 +60,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
         <div class="error-container">
             <h1 >Login Failed</h1>
             <div class="error-message"></div>
-            <a href="Login" class="back-button">Back to Login</a>
+            <a href="${pageContext.request.contextPath}/Login" class="back-button">Back to Login</a>
         </div>
     </body>
 </html>

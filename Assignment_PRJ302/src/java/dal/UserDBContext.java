@@ -38,9 +38,11 @@ public class UserDBContext extends DBContext<User> {
             stm.setString(1, userid);
             stm.setString(2, password);
             ResultSet rs = stm.executeQuery();
+            
             User user = null;
             Role current_role = new Role();
             current_role.setId(-1);
+            
             while (rs.next()) {
                 if (user == null) {
                     user = new User();
@@ -59,6 +61,7 @@ public class UserDBContext extends DBContext<User> {
                     }
 
                 }
+                
                 int rid = rs.getInt("rid");
                 if (rid > 0 && rid != current_role.getId()) {
                     current_role = new Role();

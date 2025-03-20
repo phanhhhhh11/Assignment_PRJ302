@@ -279,11 +279,11 @@
     <div class="header">
         <div class="logo">MAGIX</div>
         <div class="nav">
-            <a href="#">Dashboard</a>
+            <a href="/Dashboard">Dashboard</a>
             <a href="#">Employees</a>
             <a href="#">Jobs</a>
             <a href="#">Candidates</a>
-            <a href="Create">Leaves</a> <!-- Liên kết đến tạo đơn nghỉ phép -->
+            <a href="Create">Leave Absence</a> 
         </div>
         <div class="user">
             <img src="https://via.placeholder.com/30" alt="User">

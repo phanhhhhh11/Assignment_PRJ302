@@ -37,7 +37,7 @@ public class LoginController extends HttpServlet{
             resp.addCookie(c_user);
             resp.sendRedirect("Dashboard");
         } else {
-            resp.sendRedirect("View/Noti/LoginFailed.html");
+            resp.sendRedirect("View/Noti/LoginFailed.jsp");
         }
     }
 
