@@ -12,6 +12,8 @@ import Model.LeaveRequest;
 import Model.Employee;
 import Model.LeaveType;
 import Model.User;
+import Model.Role;
+
 /**
  *
  * @author Phanh
@@ -33,7 +35,7 @@ public class LeaveRequestDBContext extends DBContext<LeaveRequest> {
                 lr.setFrom(rs.getDate("from"));
                 lr.setTo(rs.getDate("to"));
                 User u = new User();
-                u.setUsername(rs.getString("createdby"));
+                u.setUserId(rs.getString("createdby"));
                 lr.setCreatedby(u);
                 lr.setCreateddate(rs.getDate("createddate"));
                 Employee e = new Employee();
@@ -68,7 +70,7 @@ public class LeaveRequestDBContext extends DBContext<LeaveRequest> {
                 lr.setFrom(rs.getDate("from"));
                 lr.setTo(rs.getDate("to"));
                 User u = new User();
-                u.setUsername(rs.getString("createdby"));
+                u.setUserId(rs.getString("createdby"));
                 lr.setCreatedby(u);
                 lr.setCreateddate(rs.getDate("createddate"));
                 Employee e = new Employee();
@@ -103,7 +105,6 @@ public class LeaveRequestDBContext extends DBContext<LeaveRequest> {
             stm.setInt(7, model.getLeaveType().getLeaveTypeID());
             stm.executeUpdate();
 
-            
             ResultSet rs = stm.getGeneratedKeys();
             if (rs.next()) {
                 model.setLrid(rs.getInt(1));
@@ -156,6 +157,74 @@ public class LeaveRequestDBContext extends DBContext<LeaveRequest> {
         } catch (SQLException ex) {
             Logger.getLogger(LeaveRequestDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public ArrayList<LeaveRequest> listByUser(User user) {
+        ArrayList<LeaveRequest> filteredList = new ArrayList<>();
+        ArrayList<LeaveRequest> all = list();
+
+        boolean isHR = false;
+        boolean isSupervisor = false;
+        boolean isHRSupervisor = false;
+
+        for (Role role : user.getRoles()) {
+            if ("HR".equalsIgnoreCase(role.getName())) {
+                isHR = true;
+            }
+            if ("Supervisor".equalsIgnoreCase(role.getName())) {
+                isSupervisor = true;
+                if ("HR".equalsIgnoreCase(user.getEmployee().getDept().getName())) {
+                    isHRSupervisor = true;
+                }
+            }
+        }
+
+        for (LeaveRequest lr : all) {
+            // Nhân viên thường: chỉ thấy request mình tạo ra
+            if (!isHR && !isSupervisor) {
+                if (lr.getCreatedby().getUserId().equals(user.getUserId())) {
+                    filteredList.add(lr);
+                }
+            } // Supervisor thường: request của họ + nhân viên dưới quyền
+            else if (isSupervisor && !isHRSupervisor) {
+                if (lr.getCreatedby().getUserId().equals(user.getUserId())
+                        || isMyStaff(user.getEmployee(), lr.getOwnerEid())) {
+                    filteredList.add(lr);
+                }
+            } // HR: tất cả trừ phòng HR + của chính họ
+            else if (isHR && !isHRSupervisor) {
+                if (!"HR".equalsIgnoreCase(lr.getOwnerEid().getDept().getName())
+                        || lr.getCreatedby().getUserId().equals(user.getUserId())) {
+                    filteredList.add(lr);
+                }
+            } // Supervisor phòng HR: tất cả trừ request của giám đốc
+            else if (isHRSupervisor) {
+                if (!isDirector(lr.getOwnerEid())
+                        || lr.getCreatedby().getUserId().equals(user.getUserId())) {
+                    filteredList.add(lr);
+                }
+            } else if (!isDirector(lr.getOwnerEid()) || lr.getCreatedby().getUserId().equals(user.getUserId())) {
+                filteredList.add(lr);
+            }
+        }
+
+        return filteredList;
+    }
+
+    private boolean isMyStaff(Employee supervisor, Employee staff) {
+        if (supervisor.getStaffs() == null) {
+            return false;
+        }
+        for (Employee e : supervisor.getStaffs()) {
+            if (e.getId() == staff.getId()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isDirector(Employee e) {
+        return e.getManager() == null;
     }
 
 }

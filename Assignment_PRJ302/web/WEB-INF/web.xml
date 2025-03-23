@@ -2,7 +2,7 @@
 <web-app version="6.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
     <servlet>
         <servlet-name>Approval</servlet-name>
-        <jsp-file>/View/Approval.jsp</jsp-file>
+        <servlet-class>controller.leaveabsence.UpdateApproval</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>Login</servlet-name>
@@ -21,10 +21,6 @@
         <servlet-class>controller.dashboard.Dashboard</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>Approval</servlet-name>
-        <url-pattern>/View/Approval.jsp</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/Login</url-pattern>
     </servlet-mapping>
@@ -39,5 +35,9 @@
     <servlet-mapping>
         <servlet-name>Dashboard</servlet-name>
         <url-pattern>/Dashboard</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Approval</servlet-name>
+        <url-pattern>/Approval</url-pattern>
     </servlet-mapping>
 </web-app>

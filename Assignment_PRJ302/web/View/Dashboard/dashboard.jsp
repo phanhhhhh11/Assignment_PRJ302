@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
     <style>
         body {
             margin: 0;
@@ -57,25 +57,24 @@
         }
 
         .header .user span {
-            font-weight: 400; /* Poppins Regular cho tên người dùng */
-            color: #fff;
+            font-weight: 400; 
         }
 
         .top-section {
-            background: #1a1a1a; /* Nền đen cho phần trên (1/3) */
-            padding: 30px;
+            background: #1a1a1a; 
+            padding: 50px;
         }
 
         .greeting {
             font-size: 24px;
-            font-weight: 700; /* Poppins Bold cho tiêu đề chào mừng */
+            font-weight: 700; 
             color: #fff;
             margin-bottom: 20px;
         }
 
         .main-content {
             padding: 20px;
-            background: #f0f2f5; /* Nền xám nhạt cho phần nội dung chính */
+            background: #f0f2f5;
         }
 
         .stats {
@@ -250,7 +249,7 @@
         .interviews .tabs button.active {
             background: #333;
             color: #fff;
-            font-weight: 600; /* Poppins SemiBold cho tab active */
+            font-weight: 600; 
         }
 
         .project-overview .stat {
@@ -259,13 +258,13 @@
 
         .project-overview .stat p {
             font-size: 24px;
-            font-weight: 700; /* Poppins Bold cho số liệu lớn */
+            font-weight: 700; 
         }
 
         .project-overview .stat span {
             font-size: 14px;
             color: #999;
-            font-weight: 400; /* Poppins Regular cho nhãn */
+            font-weight: 400; 
         }
 
         @media (max-width: 768px) {
@@ -279,11 +278,11 @@
     <div class="header">
         <div class="logo">MAGIX</div>
         <div class="nav">
-            <a href="/Dashboard">Dashboard</a>
+            <a href="#">Dashboard</a>
             <a href="#">Employees</a>
             <a href="#">Jobs</a>
-            <a href="#">Candidates</a>
-            <a href="Create">Leave Absence</a> 
+            <a href="Approval">Approval</a>
+            <a href="Create">Leaves</a> 
         </div>
         <div class="user">
             <img src="https://via.placeholder.com/30" alt="User">
