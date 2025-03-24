@@ -140,11 +140,9 @@
         <div class="header">
             <div class="logo">MAGIX</div>
             <div class="nav">
-                <a href="#">Employees</a>
                 <a href="View">View</a>
                 <a href="Approval">Approval</a>
                 <a href="Create">Leaves</a> 
-                <a href="Update">Update</a>
             </div>
             <div class="user">
                 <span>Andrew Niles</span>

@@ -278,151 +278,21 @@
     <div class="header">
         <div class="logo">MAGIX</div>
         <div class="nav">
-            <a href="#">Employees</a>
             <a href="View">View</a>
             <a href="Approval">Approval</a>
             <a href="Create">Leaves</a> 
-            <a href="Update">Update</a>
         </div>
         <div class="user">
-            <img src="https://via.placeholder.com/30" alt="User">
-            <span>Andrew Niles</span>
+            <span>${requestScope.user.userId}</span>
         </div>
     </div>
 
     <div class="top-section">
         <div class="greeting">
-            Hello Andrew, <br>Good Morning
+            <label>Good Morning</label>
         </div>
     </div>
 
-    <div class="main-content">
-        <div class="stats">
-            <div class="stat-card">
-                <div class="icon">👥</div>
-                <h3>Total Employees</h3>
-                <p>200/200</p>
-            </div>
-            <div class="stat-card">
-                <div class="icon">🌴</div>
-                <h3>On Leave</h3>
-                <p>12/200</p>
-            </div>
-            <div class="stat-card">
-                <div class="icon">🆕</div>
-                <h3>New Joinee</h3>
-                <p>15/200</p>
-            </div>
-            <div class="stat-card">
-                <div class="icon">😊</div>
-                <h3>Happiness Rate</h3>
-                <p>80%</p>
-            </div>
-            <div class="stat-card">
-                <div class="icon">🏢</div>
-                <h3>200</h3>
-                <p class="small">23% Remote</p>
-                <p class="small">77% Office</p>
-            </div>
-        </div>
-
-        <div class="chart-section">
-            <div class="attendance-chart">
-                <h3>Attendance Overview</h3>
-                <div class="chart-placeholder">Chart Placeholder (On Time, Late Arrival, Absent)</div>
-            </div>
-            <div class="news-events">
-                <h3>News & Events</h3>
-                <div class="event">
-                    <div class="date">18 <span>FEB</span></div>
-                    <div class="details">Board meeting: Attend all project...</div>
-                </div>
-                <div class="event">
-                    <div class="date">10 <span>FEB</span></div>
-                    <div class="details">Updated company policy: It is long established...</div>
-                </div>
-                <div class="event">
-                    <div class="date">08 <span>FEB</span></div>
-                    <div class="details">Updated company policy: It is long established...</div>
-                </div>
-                <div class="event">
-                    <div class="date">05 <span>FEB</span></div>
-                    <div class="details">Updated leave policy: It is long established...</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="bottom-section">
-            <div class="job-applications">
-                <h3>Recent Job Applications</h3>
-                <div class="application">
-                    <img src="https://via.placeholder.com/40" alt="Applicant">
-                    <div class="details">
-                        <div>Guy Hawkins</div>
-                        <div>USA</div>
-                        <div>UI/UX Designer</div>
-                    </div>
-                </div>
-                <div class="application">
-                    <img src="https://via.placeholder.com/40" alt="Applicant">
-                    <div class="details">
-                        <div>Floyd Miles</div>
-                        <div>Japan</div>
-                        <div>Python Developer</div>
-                    </div>
-                </div>
-                <div class="application">
-                    <img src="https://via.placeholder.com/40" alt="Applicant">
-                    <div class="details">
-                        <div>Robert Fox</div>
-                        <div>Germany</div>
-                        <div>Laravel Developer</div>
-                    </div>
-                </div>
-                <div class="application">
-                    <img src="https://via.placeholder.com/40" alt="Applicant">
-                    <div class="details">
-                        <div>Kristin Jones</div>
-                        <div>Canada</div>
-                        <div>Product Designer</div>
-                    </div>
-                </div>
-            </div>
-            <div class="interviews">
-                <h3>Upcoming Interviews</h3>
-                <div class="tabs">
-                    <button class="active">Today</button>
-                    <button>Tomorrow</button>
-                </div>
-                <div class="interview">
-                    <img src="https://via.placeholder.com/40" alt="Candidate">
-                    <div class="details">
-                        <div>Guy Hawkins</div>
-                        <div>UI/UX Designer</div>
-                    </div>
-                    <div>10:00 - 11:00</div>
-                </div>
-                <div class="interview">
-                    <img src="https://via.placeholder.com/40" alt="Candidate">
-                    <div class="details">
-                        <div>Floyd Miles</div>
-                        <div>Python Developer</div>
-                    </div>
-                    <div>10:00 - 12:00</div>
-                </div>
-            </div>
-            <div class="project-overview">
-                <h3>Project Overview</h3>
-                <div class="stat">
-                    <p>125</p>
-                    <span>Total Projects</span>
-                </div>
-                <div class="stat">
-                    <p>13</p>
-                    <span>Projects on HOLD</span>
-                </div>
-            </div>
-        </div>
-    </div>
+   
 </body>
 </html>
