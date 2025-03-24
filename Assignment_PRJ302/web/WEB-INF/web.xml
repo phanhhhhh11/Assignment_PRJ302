@@ -20,6 +20,14 @@
         <servlet-name>Dashboard</servlet-name>
         <servlet-class>controller.dashboard.Dashboard</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ViewLeaveAbsence</servlet-name>
+        <servlet-class>controller.leaveabsence.ViewLeaveAbsence</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateLeaveRequest</servlet-name>
+        <servlet-class>controller.leaveabsence.UpdateLeaveAbsence</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/Login</url-pattern>
@@ -39,5 +47,13 @@
     <servlet-mapping>
         <servlet-name>Approval</servlet-name>
         <url-pattern>/Approval</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewLeaveAbsence</servlet-name>
+        <url-pattern>/View</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateLeaveRequest</servlet-name>
+        <url-pattern>/Update</url-pattern>
     </servlet-mapping>
 </web-app>

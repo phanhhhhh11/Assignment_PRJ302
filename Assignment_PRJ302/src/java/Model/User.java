@@ -62,6 +62,10 @@ public class User {
     public void setRoles(ArrayList<Role> roles) {
         this.roles = roles;
     }
+
+    public String getDisplayname() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
     
     
 }

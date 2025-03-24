@@ -12,7 +12,7 @@
             background: #f0f2f5; /* Nền xám nhạt cho toàn bộ trang */
         }
         
-        h3, p, span, a, button {
+        h3{
             font-family: 'Poppins', sans-serif;
         }
         .header {
@@ -125,11 +125,11 @@
     <div class="header">
         <div class="logo">MAGIX</div>
         <div class="nav">
-            <a href="#">Dashboard</a>
             <a href="#">Employees</a>
-            <a href="#">Jobs</a>
-            <a href="#">Candidates</a>
-            <a href="Create">Leaves</a> 
+                <a href="View">View</a>
+                <a href="Approval">Approval</a>
+                <a href="Create">Leaves</a> 
+                <a href="Update">Update</a> 
         </div>
         <div class="user">
             <span>Andrew Niles</span>
@@ -138,7 +138,7 @@
 
     <div class="top-section">
         <div class="greeting">
-            Hello Andrew, <br>Good Morning
+             <br>Good Morning
         </div>
     </div>
     <div class="main-content">

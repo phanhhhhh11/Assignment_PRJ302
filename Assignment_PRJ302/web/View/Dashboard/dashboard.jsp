@@ -278,11 +278,11 @@
     <div class="header">
         <div class="logo">MAGIX</div>
         <div class="nav">
-            <a href="#">Dashboard</a>
             <a href="#">Employees</a>
-            <a href="#">Jobs</a>
+            <a href="View">View</a>
             <a href="Approval">Approval</a>
             <a href="Create">Leaves</a> 
+            <a href="Update">Update</a>
         </div>
         <div class="user">
             <img src="https://via.placeholder.com/30" alt="User">

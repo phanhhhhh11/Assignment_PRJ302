@@ -5,8 +5,10 @@
 
 package controller.authentication;
 
+import Model.Employee;
 import dal.UserDBContext;
 import Model.User;
+import dal.EmployeeDBContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,18 +27,24 @@ public class LoginController extends HttpServlet{
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        
+        
         String userID = req.getParameter("userID");
         String password = req.getParameter("password");
         UserDBContext db = new UserDBContext();
         User user = db.get(userID, password);
-        if(user != null){
+        if(user != null)
+        {
+            EmployeeDBContext edb = new EmployeeDBContext();
+            Employee profile = edb.get(user.getEmployee().getId());
+            profile.setManager(user.getEmployee().getManager());
+            user.setEmployee(profile);
             HttpSession session = req.getSession();
             session.setAttribute("user", user);
-            Cookie c_user = new Cookie("userID", userID);
-            c_user.setMaxAge(3600*24*30*12);
-            resp.addCookie(c_user);
             resp.sendRedirect("Dashboard");
-        } else {
+        }
+        else
+        {
             resp.sendRedirect("View/Noti/LoginFailed.jsp");
         }
     }

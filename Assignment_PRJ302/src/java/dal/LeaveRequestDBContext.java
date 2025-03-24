@@ -46,7 +46,7 @@ public class LeaveRequestDBContext extends DBContext<LeaveRequest> {
                 lr.setLeaveTypeID(lt);
                 lr.setHRApprove(rs.getString("HRApprove"));
                 lr.setSupervisorApprove(rs.getString("SupervisorApprove"));
-                lr.setStatus(String.valueOf(rs.getInt("status")));
+                lr.setStatus(rs.getInt("status"));
                 list.add(lr);
             }
         } catch (SQLException ex) {
@@ -81,7 +81,7 @@ public class LeaveRequestDBContext extends DBContext<LeaveRequest> {
                 lr.setLeaveTypeID(lt);
                 lr.setHRApprove(rs.getString("HRApprove"));
                 lr.setSupervisorApprove(rs.getString("SupervisorApprove"));
-                lr.setStatus(String.valueOf(rs.getInt("status")));
+                lr.setStatus(rs.getInt("status"));
                 return lr;
             }
         } catch (SQLException ex) {
@@ -127,23 +127,37 @@ public class LeaveRequestDBContext extends DBContext<LeaveRequest> {
         }
     }
 
-    @Override
     public void update(LeaveRequest model) {
-        String sql = "UPDATE LeaveRequests SET title=?, reason=?, [from]=?, [to]=?, leaveTypeID=?, HRApprove=?, SupervisorApprove=?, status=? WHERE lrid=?";
         try {
+            connection.setAutoCommit(false);
+            String sql = "UPDATE [LeaveRequests]\n"
+                    + "   SET [title] = ?,\n"
+                    + "       [reason] = ?,\n"
+                    + "       [from] = ?,\n"
+                    + "       [to] = ?,\n"
+                    + "       [leaveTypeID] = ?,\n"
+                    + "       [owner_eid] = ?\n"
+                    + " WHERE lrid = ?";
+
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setString(1, model.getTitle());
             stm.setString(2, model.getReason());
             stm.setDate(3, model.getFrom());
             stm.setDate(4, model.getTo());
             stm.setInt(5, model.getLeaveType().getLeaveTypeID());
-            stm.setString(6, model.getHRApprove());
-            stm.setString(7, model.getSupervisorApprove());
-            stm.setInt(8, model.getStatus().equals("1") ? 1 : 0);
-            stm.setInt(9, model.getLrid());
+            stm.setInt(6, model.getOwnerEid().getId());
+            stm.setInt(7, model.getLrid());
+
             stm.executeUpdate();
+            connection.commit();
+
         } catch (SQLException ex) {
             Logger.getLogger(LeaveRequestDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            try {
+                connection.rollback();
+            } catch (SQLException ex1) {
+                Logger.getLogger(LeaveRequestDBContext.class.getName()).log(Level.SEVERE, null, ex1);
+            }
         }
     }
 
@@ -168,15 +182,16 @@ public class LeaveRequestDBContext extends DBContext<LeaveRequest> {
         boolean isHRSupervisor = false;
 
         for (Role role : user.getRoles()) {
-            if ("HR".equalsIgnoreCase(role.getName())) {
-                isHR = true;
-            }
             if ("Supervisor".equalsIgnoreCase(role.getName())) {
                 isSupervisor = true;
-                if ("HR".equalsIgnoreCase(user.getEmployee().getDept().getName())) {
-                    isHRSupervisor = true;
-                }
             }
+        }
+        if ("HR".equalsIgnoreCase(user.getEmployee().getDept().getName())) {
+            isHR = true;
+        }
+        if (isDirector(user.getEmployee()) || isHR) {
+            filteredList = list();
+            return filteredList;
         }
 
         for (LeaveRequest lr : all) {
@@ -191,21 +206,8 @@ public class LeaveRequestDBContext extends DBContext<LeaveRequest> {
                         || isMyStaff(user.getEmployee(), lr.getOwnerEid())) {
                     filteredList.add(lr);
                 }
-            } // HR: tất cả trừ phòng HR + của chính họ
-            else if (isHR && !isHRSupervisor) {
-                if (!"HR".equalsIgnoreCase(lr.getOwnerEid().getDept().getName())
-                        || lr.getCreatedby().getUserId().equals(user.getUserId())) {
-                    filteredList.add(lr);
-                }
-            } // Supervisor phòng HR: tất cả trừ request của giám đốc
-            else if (isHRSupervisor) {
-                if (!isDirector(lr.getOwnerEid())
-                        || lr.getCreatedby().getUserId().equals(user.getUserId())) {
-                    filteredList.add(lr);
-                }
-            } else if (!isDirector(lr.getOwnerEid()) || lr.getCreatedby().getUserId().equals(user.getUserId())) {
-                filteredList.add(lr);
             }
+
         }
 
         return filteredList;
@@ -227,4 +229,15 @@ public class LeaveRequestDBContext extends DBContext<LeaveRequest> {
         return e.getManager() == null;
     }
 
+    public void updateApproval(LeaveRequest lr) throws SQLException {
+        String sql = "UPDATE LeaveRequests SET "
+                + "HRApprove = ?, SupervisorApprove = ?, status = ? "
+                + "WHERE lrid = ?";
+        PreparedStatement stm = connection.prepareStatement(sql);
+        stm.setString(1, lr.getHRApprove());
+        stm.setString(2, lr.getSupervisorApprove());
+        stm.setInt(3, lr.getStatus());
+        stm.setInt(4, lr.getLrid());
+        stm.executeUpdate();
+    }
 }

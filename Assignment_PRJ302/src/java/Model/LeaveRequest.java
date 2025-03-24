@@ -18,7 +18,7 @@ public class LeaveRequest extends BaseModel {
     private String reason;
     private Date from;
     private Date to;
-    private String status;
+    private int status;
     private User createdby;
     private Date createddate;
     private Employee ownerEid;
@@ -66,11 +66,11 @@ public class LeaveRequest extends BaseModel {
         this.to = to;
     }
 
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 

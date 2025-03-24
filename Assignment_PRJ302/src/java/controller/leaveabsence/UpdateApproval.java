@@ -8,7 +8,7 @@ import dal.LeaveRequestDBContext;
 import Model.LeaveRequest;
 import Model.Role;
 import Model.User;
-import controller.authentication.BaseRequiredAuthenticationController;
+import controller.authentication.BaseRecordAccessControlByOwnerController;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -20,57 +20,49 @@ import java.io.*;
  *
  * @author Phanh
  */
-public class UpdateApproval extends BaseRequiredAuthenticationController {
+public class UpdateApproval extends BaseRecordAccessControlByOwnerController<LeaveRequest> {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp, User user) throws ServletException, IOException {
         try {
+
             int lrid = Integer.parseInt(req.getParameter("lrid"));
-            String action = req.getParameter("action"); // approve or reject
+            String role="";
+            for (Role r : user.getRoles()) {
+                if ("Supervisor".equalsIgnoreCase(r.getName())) {
+                    role = "Supervisor";
+                    break;
+                }
+            }
+            String decision = req.getParameter("action"); // approved / rejected
 
+            LeaveRequest lr = new LeaveRequest();
             LeaveRequestDBContext db = new LeaveRequestDBContext();
-            LeaveRequest lr = db.get(lrid);
+            lr = db.get(lrid);
 
-            boolean isHR = false;
-            boolean isSupervisor = false;
-
-            for (Role role : user.getRoles()) {
-                if ("HR".equalsIgnoreCase(role.getName())) {
-                    isHR = true;
-                }
-                if ("Supervisor".equalsIgnoreCase(role.getName())) {
-                    isSupervisor = true;
-                }
+            // Cập nhật theo vai trò
+            if ("Supervisor".equalsIgnoreCase(role)) {
+                lr.setSupervisorApprove(decision);
+            }
+            if ("HR".equalsIgnoreCase(user.getEmployee().getDept().getName())) {
+                lr.setHRApprove(decision);
             }
 
-            if (isHR) {
-                if ("approve".equalsIgnoreCase(action)) {
-                    lr.setHRApprove("APPROVED");
-                } else if ("reject".equalsIgnoreCase(action)) {
-                    lr.setHRApprove("REJECTED");
-                }
-            }
+            // Cập nhật status
+            String hrStatus = lr.getHRApprove();
+            String supStatus = lr.getSupervisorApprove();
 
-            if (isSupervisor) {
-                if ("approve".equalsIgnoreCase(action)) {
-                    lr.setSupervisorApprove("APPROVED");
-                } else if ("reject".equalsIgnoreCase(action)) {
-                    lr.setSupervisorApprove("REJECTED");
-                }
-            }
-
-            // Update status based on both approvals
-            if ("REJECTED".equalsIgnoreCase(lr.getHRApprove()) || "REJECTED".equalsIgnoreCase(lr.getSupervisorApprove())) {
-                lr.setStatus("0"); // Rejected
-            } else if ("APPROVED".equalsIgnoreCase(lr.getHRApprove()) && "APPROVED".equalsIgnoreCase(lr.getSupervisorApprove())) {
-                lr.setStatus("2"); // Approved
+            if ("approve".equalsIgnoreCase(supStatus) && "approve".equalsIgnoreCase(hrStatus)) {
+                lr.setStatus(2); // Both approved
+            } else if (("reject".equalsIgnoreCase(supStatus) && "reject".equalsIgnoreCase(hrStatus))) {
+                lr.setStatus(0); // Both rejected
             } else {
-                lr.setStatus("1"); // Still pending
+                lr.setStatus(1); // Pending or partial approval
             }
 
-            db.update(lr);
-            resp.sendRedirect("ListApproval");
+            db.updateApproval(lr);
 
+        req.getRequestDispatcher("/View/Noti/ApprovalSuccessful.jsp").forward(req, resp);
         } catch (Exception ex) {
             ex.printStackTrace();
             resp.getWriter().println("Error updating approval: " + ex.getMessage());
@@ -82,7 +74,27 @@ public class UpdateApproval extends BaseRequiredAuthenticationController {
         LeaveRequestDBContext db = new LeaveRequestDBContext();
         ArrayList<LeaveRequest> list = db.listByUser(user);
         req.setAttribute("leaveRequests", list);
-        req.getRequestDispatcher("/View/LeaveRequest/Approval.jsp").forward(req, resp);
+        req.getRequestDispatcher("/View/LeaveRequest/ListApproval.jsp").forward(req, resp);
+    }
+
+    @Override
+    protected LeaveRequest getModel(int id) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    protected String getAccessDeniedMessage(User u, LeaveRequest model) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp, User user, LeaveRequest model) throws ServletException, IOException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp, User user, LeaveRequest model) throws ServletException, IOException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
 }

@@ -39,7 +39,9 @@ public class CreateLeaveAbsence extends BaseRequiredAuthenticationController {
 
             ArrayList<Employee> employees = new ArrayList<>();
             employees.add(user.getEmployee());
-            employees.addAll(user.getEmployee().getStaffs());
+            for (Employee staff : user.getEmployee().getStaffs()) {
+                employees.add(staff);
+            }
             req.setAttribute("employees", employees);
 
             req.getRequestDispatcher("/View/LeaveRequest/AbsenceForm.jsp").forward(req, resp);
@@ -66,7 +68,6 @@ public class CreateLeaveAbsence extends BaseRequiredAuthenticationController {
             LeaveType lt = new LeaveType();
             lt.setLeaveTypeID(Integer.parseInt(req.getParameter("ltid")));
             lr.setLeaveTypeID(lt);
-
 
             LeaveRequestDBContext db = new LeaveRequestDBContext();
             db.insert(lr);
