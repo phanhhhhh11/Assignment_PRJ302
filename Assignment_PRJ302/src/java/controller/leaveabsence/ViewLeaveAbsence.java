@@ -4,6 +4,7 @@
  */
 package controller.leaveabsence;
 
+import Model.Employee;
 import dal.LeaveRequestDBContext;
 import Model.LeaveRequest;
 import Model.LeaveType;
@@ -37,7 +38,7 @@ public class ViewLeaveAbsence extends BaseRequiredAuthenticationController {
             db.delete(lr);
             resp.sendRedirect("View/Noti/DeleteSuccessful.jsp");
         } else if ("update".equalsIgnoreCase(action)) {
-            
+
             resp.sendRedirect("Update?lrid=" + lrid);
         } else {
             doGet(req, resp, user);
@@ -47,14 +48,37 @@ public class ViewLeaveAbsence extends BaseRequiredAuthenticationController {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp, User user) throws ServletException, IOException {
         try {
-            LeaveRequestDBContext db = new LeaveRequestDBContext();
-            ArrayList<LeaveRequest> list = db.listByUser(user);
-            req.setAttribute("leaveRequests", list);
-            
             LeaveTypeDBContext leaveTypeDB = new LeaveTypeDBContext();
+            LeaveRequestDBContext db = new LeaveRequestDBContext();
+            ArrayList<Employee> directStaff = user.getEmployee().getDirectstaffs();
+            Set<Integer> seenRequestIds = new HashSet<>();
+            ArrayList<LeaveRequest> list = new ArrayList<>();
+
+// Đơn của cấp dưới
+            for (Employee e : directStaff) {
+                ArrayList<LeaveRequest> subLeaves = db.getleaverequeststaff(e.getId());
+                if (subLeaves != null) {
+                    for (LeaveRequest lr : subLeaves) {
+                        if (seenRequestIds.add(lr.getLrid())) {
+                            list.add(lr);
+                        }
+                    }
+                }
+            }
+
+// Đơn của chính supervisor
+            ArrayList<LeaveRequest> ownLeaves = db.getleaverequeststaff(user.getEmployee().getId());
+            if (ownLeaves != null) {
+                for (LeaveRequest lr : ownLeaves) {
+                    if (seenRequestIds.add(lr.getLrid())) {
+                        list.add(lr);
+                    }
+                }
+            }
+
             ArrayList<LeaveType> leaveTypes = leaveTypeDB.getAllLeaveType();
             req.setAttribute("leaveTypes", leaveTypes);
-
+            req.setAttribute("leaveRequests", list);
             req.getRequestDispatcher("/View/LeaveRequest/ListForm.jsp").forward(req, resp);
         } catch (SQLException ex) {
             Logger.getLogger(ViewLeaveAbsence.class.getName()).log(Level.SEVERE, null, ex);

@@ -155,7 +155,6 @@
             <div class="logo">MAGIX</div>
             <div class="nav">
                 <a href="Dashboard">Dashboard</a>
-                <a href="View">Dashboard</a>
                 <a href="View">View</a>
                 <a href="Create">Leaves</a>
                 <c:if test="${sessionScope.approvalAccess}">
@@ -164,6 +163,7 @@
                 <c:if test="${sessionScope.approvalAccess}">
                     <a href="Agenda">Agenda</a>
                 </c:if>
+                <a href="${pageContext.request.contextPath}/Logout" style="color: red;">Logout</a>
             </div>
             <div class="user-profile">
                 <div class="name">
@@ -176,7 +176,6 @@
                             ${r.name} <c:if test="${!loop.last}">, </c:if>
                         </c:forEach>
                     </p>
-                    <p><a href="#">Logout</a></p>
                 </div>
             </div>
         </div>
@@ -211,10 +210,10 @@
                         <p><span class="info-label">Leave Type:</span>
 
                             <c:forEach var="ltype" items="${leaveTypes}">
-                            <c:if test="${ltype.leaveTypeID == lr.leaveType.leaveTypeID}">
-                                ${ltype.leaveTypeName}
-                            </c:if>
-                        </c:forEach>
+                                <c:if test="${ltype.leaveTypeID == lr.leaveType.leaveTypeID}">
+                                    ${ltype.leaveTypeName}
+                                </c:if>
+                            </c:forEach>
                         </p>
 
 

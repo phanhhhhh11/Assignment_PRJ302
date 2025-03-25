@@ -167,6 +167,7 @@
                 <c:if test="${sessionScope.approvalAccess}">
                     <a href="Agenda">Agenda</a>
                 </c:if>
+                <a href="${pageContext.request.contextPath}/Logout" style="color: red;">Logout</a>
             </div>
             <div class="user-profile">
                 <div class="name">
@@ -179,7 +180,6 @@
                             ${r.name} <c:if test="${!loop.last}">, </c:if>
                         </c:forEach>
                     </p>
-                    <p><a href="#">Logout</a></p>
                 </div>
             </div>
         </div>

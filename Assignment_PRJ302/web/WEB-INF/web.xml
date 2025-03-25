@@ -14,7 +14,7 @@
     </servlet>
     <servlet>
         <servlet-name>Agenda</servlet-name>
-        <jsp-file>/View/Agenda.jsp</jsp-file>
+        <servlet-class>controller.agenda.ViewAgenda</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>Dashboard</servlet-name>

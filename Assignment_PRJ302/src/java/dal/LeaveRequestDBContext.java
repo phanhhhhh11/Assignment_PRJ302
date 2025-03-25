@@ -13,12 +13,77 @@ import Model.Employee;
 import Model.LeaveType;
 import Model.User;
 import Model.Role;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  *
  * @author Phanh
  */
 public class LeaveRequestDBContext extends DBContext<LeaveRequest> {
+
+    public Map<Date, List<LeaveRequest>> getRequestsByMonth(int month, int year) {
+        Map<Date, List<LeaveRequest>> map = new HashMap<>();
+        String sql = "SELECT lr.lrid, lr.title, lr.reason, lr.[from], lr.[to], "
+                + "lt.leaveTypeID, lt.leaveTypeName, e.eid, e.ename "
+                + "FROM LeaveRequests lr "
+                + "INNER JOIN LeaveType lt ON lr.leaveTypeID = lt.leaveTypeID "
+                + "INNER JOIN Employee e ON lr.owner_eid = e.eid "
+                + "WHERE lr.[from] <= ? AND lr.[to] >= ? AND status = 2";
+
+        try (PreparedStatement stm = connection.prepareStatement(sql)) {
+            java.util.Calendar cal = java.util.Calendar.getInstance();
+            cal.set(year, month - 1, 1);
+            Date startDate = new Date(cal.getTimeInMillis());
+            cal.set(java.util.Calendar.DAY_OF_MONTH, cal.getActualMaximum(java.util.Calendar.DAY_OF_MONTH));
+            Date endDate = new Date(cal.getTimeInMillis());
+
+            stm.setDate(1, endDate);
+            stm.setDate(2, startDate);
+
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                LeaveRequest lr = new LeaveRequest();
+                lr.setLrid(rs.getInt("lrid"));
+                lr.setTitle(rs.getString("title"));
+                lr.setReason(rs.getString("reason"));
+                Date from = rs.getDate("from");
+                Date to = rs.getDate("to");
+                lr.setFrom(from);
+                lr.setTo(to);
+
+                LeaveType lt = new LeaveType();
+                lt.setLeaveTypeID(rs.getInt("leaveTypeID"));
+                lt.setLeaveTypeName(rs.getString("leaveTypeName"));
+                lr.setLeaveType(lt);
+
+                Employee e = new Employee();
+                e.setId(rs.getInt("eid"));
+                e.setName(rs.getString("ename"));
+                lr.setOwnerEid(e);
+
+                // Thêm tất cả các ngày từ 'from' đến 'to' vào map
+                java.util.Calendar loopCal = java.util.Calendar.getInstance();
+                loopCal.setTime(from);
+                while (!loopCal.getTime().after(to)) {
+                    Date current = new Date(loopCal.getTimeInMillis());
+
+                    // Chỉ thêm những ngày trong tháng đang xem
+                    if (current.compareTo(startDate) >= 0 && current.compareTo(endDate) <= 0) {
+                        map.putIfAbsent(current, new ArrayList<>());
+                        map.get(current).add(lr);
+                    }
+
+                    loopCal.add(java.util.Calendar.DATE, 1);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return map;
+    }
 
     @Override
     public ArrayList<LeaveRequest> list() {
@@ -88,6 +153,60 @@ public class LeaveRequestDBContext extends DBContext<LeaveRequest> {
             Logger.getLogger(LeaveRequestDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+    }
+
+    public ArrayList<LeaveRequest> getleaverequeststaff(int eid) {
+        ArrayList<LeaveRequest> leaverequests = new ArrayList<>();
+        String sql = "SELECT l.* FROM Employees e left join LeaveRequests l on e.eid = l.owner_eid WHERE e.eid =?";
+        try {
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, eid);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                if (rs.getInt("lrid") != 0) {
+                    LeaveRequest lr = new LeaveRequest();
+                    lr.setLrid(rs.getInt("lrid"));
+                    lr.setTitle(rs.getString("title"));
+                    lr.setReason(rs.getString("reason"));
+                    lr.setFrom(rs.getDate("from"));
+                    lr.setTo(rs.getDate("to"));
+                    User u = new User();
+                    u.setUserId(rs.getString("createdby"));
+                    lr.setCreatedby(u);
+                    lr.setCreateddate(rs.getDate("createddate"));
+                    Employee e = new Employee();
+                    e.setId(rs.getInt("owner_eid"));
+                    lr.setOwnerEid(e);
+                    LeaveType lt = new LeaveType();
+                    lt.setLeaveTypeID(rs.getInt("leaveTypeID"));
+                    lr.setLeaveType(lt);
+                    lr.setHRApprove(rs.getString("HRApprove"));
+                    lr.setSupervisorApprove(rs.getString("SupervisorApprove"));
+                    lr.setStatus(rs.getInt("status"));
+                    leaverequests.add(lr);
+                }
+            }
+            return leaverequests;
+        } catch (SQLException ex) {
+            Logger.getLogger(LeaveRequestDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    public ArrayList<LeaveRequest> listBySubordinates(ArrayList<Employee> staffList) {
+        ArrayList<LeaveRequest> all = new ArrayList<>();
+        if (staffList == null) {
+            return all;
+        }
+
+        for (Employee e : staffList) {
+            ArrayList<LeaveRequest> requests = getleaverequeststaff(e.getId());
+            if (requests != null) {
+                all.addAll(requests);
+            }
+        }
+
+        return all;
     }
 
     @Override

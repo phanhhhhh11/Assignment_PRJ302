@@ -4,9 +4,9 @@
  */
 package dal;
 
+import Model.LeaveRequest;
 import Model.LeaveType;
 import java.sql.*;
-import java.lang.*;
 import java.util.*;
 import java.io.*;
 import java.util.logging.Level;
@@ -65,5 +65,7 @@ public class LeaveTypeDBContext extends DBContext<LeaveType> {
     public void delete(LeaveType model) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+
+
 
 }
