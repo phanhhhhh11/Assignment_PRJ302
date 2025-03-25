@@ -84,7 +84,7 @@ public class UpdateLeaveAbsence extends BaseRecordAccessControlByOwnerController
 
             LeaveType lt = new LeaveType();
             lt.setLeaveTypeID(Integer.parseInt(req.getParameter("ltid")));
-            lr.setLeaveTypeID(lt);
+            lr.setLeaveType(lt);
             LeaveRequestDBContext db = new LeaveRequestDBContext();
             db.update(lr);
 

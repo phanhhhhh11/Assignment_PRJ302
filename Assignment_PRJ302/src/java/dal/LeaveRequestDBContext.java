@@ -43,7 +43,7 @@ public class LeaveRequestDBContext extends DBContext<LeaveRequest> {
                 lr.setOwnerEid(e);
                 LeaveType lt = new LeaveType();
                 lt.setLeaveTypeID(rs.getInt("leaveTypeID"));
-                lr.setLeaveTypeID(lt);
+                lr.setLeaveType(lt);
                 lr.setHRApprove(rs.getString("HRApprove"));
                 lr.setSupervisorApprove(rs.getString("SupervisorApprove"));
                 lr.setStatus(rs.getInt("status"));
@@ -78,7 +78,7 @@ public class LeaveRequestDBContext extends DBContext<LeaveRequest> {
                 lr.setOwnerEid(e);
                 LeaveType lt = new LeaveType();
                 lt.setLeaveTypeID(rs.getInt("leaveTypeID"));
-                lr.setLeaveTypeID(lt);
+                lr.setLeaveType(lt);
                 lr.setHRApprove(rs.getString("HRApprove"));
                 lr.setSupervisorApprove(rs.getString("SupervisorApprove"));
                 lr.setStatus(rs.getInt("status"));
@@ -225,7 +225,7 @@ public class LeaveRequestDBContext extends DBContext<LeaveRequest> {
         return false;
     }
 
-    private boolean isDirector(Employee e) {
+    public boolean isDirector(Employee e) {
         return e.getManager() == null;
     }
 

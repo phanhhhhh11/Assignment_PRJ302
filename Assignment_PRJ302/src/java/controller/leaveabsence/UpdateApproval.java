@@ -39,7 +39,7 @@ public class UpdateApproval extends BaseRecordAccessControlByOwnerController<Lea
             LeaveRequest lr = new LeaveRequest();
             LeaveRequestDBContext db = new LeaveRequestDBContext();
             lr = db.get(lrid);
-
+            
             // Cập nhật theo vai trò
             if ("Supervisor".equalsIgnoreCase(role)) {
                 lr.setSupervisorApprove(decision);
@@ -51,13 +51,16 @@ public class UpdateApproval extends BaseRecordAccessControlByOwnerController<Lea
             // Cập nhật status
             String hrStatus = lr.getHRApprove();
             String supStatus = lr.getSupervisorApprove();
-
+            
             if ("approve".equalsIgnoreCase(supStatus) && "approve".equalsIgnoreCase(hrStatus)) {
                 lr.setStatus(2); // Both approved
             } else if (("reject".equalsIgnoreCase(supStatus) && "reject".equalsIgnoreCase(hrStatus))) {
                 lr.setStatus(0); // Both rejected
             } else {
                 lr.setStatus(1); // Pending or partial approval
+            }
+            if(db.isDirector(user.getEmployee())){
+                lr.setStatus(2);
             }
 
             db.updateApproval(lr);

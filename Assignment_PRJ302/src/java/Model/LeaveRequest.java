@@ -102,7 +102,7 @@ public class LeaveRequest extends BaseModel {
         return leaveType;
     }
 
-    public void setLeaveTypeID(LeaveType leaveType) {
+    public void setLeaveType(LeaveType leaveType) {
         this.leaveType = leaveType;
     }
 

@@ -2,10 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-
 package controller.authentication;
 
 import Model.Employee;
+import Model.Role;
 import dal.UserDBContext;
 import Model.User;
 import dal.EmployeeDBContext;
@@ -19,32 +19,40 @@ import jakarta.servlet.http.Cookie;
 import java.lang.*;
 import java.util.*;
 import java.io.*;
+
 /**
  *
  * @author Phanh
  */
-public class LoginController extends HttpServlet{
+public class LoginController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        
-        
+
         String userID = req.getParameter("userID");
         String password = req.getParameter("password");
         UserDBContext db = new UserDBContext();
         User user = db.get(userID, password);
-        if(user != null)
-        {
+        if (user != null) {
             EmployeeDBContext edb = new EmployeeDBContext();
             Employee profile = edb.get(user.getEmployee().getId());
             profile.setManager(user.getEmployee().getManager());
             user.setEmployee(profile);
             HttpSession session = req.getSession();
             session.setAttribute("user", user);
+
+            boolean approvalAccess = false;
+            for (Role r : user.getRoles()) {
+                if (r.getName().equalsIgnoreCase("Supervisor") || r.getName().equalsIgnoreCase("HR") 
+                     || r.getName().equalsIgnoreCase("Director")) {
+                    approvalAccess = true;
+                    break;
+                }
+            }
+            session.setAttribute("approvalAccess", approvalAccess);
+
             resp.sendRedirect("Dashboard");
-        }
-        else
-        {
+        } else {
             resp.sendRedirect("View/Noti/LoginFailed.jsp");
         }
     }
@@ -54,5 +62,4 @@ public class LoginController extends HttpServlet{
         req.getRequestDispatcher("View/Login.jsp").forward(req, resp);
     }
 
-    
 }

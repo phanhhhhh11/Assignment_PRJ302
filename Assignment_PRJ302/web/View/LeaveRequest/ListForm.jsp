@@ -2,25 +2,25 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
     <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Leave Request Approval</title>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
         <style>
-
-            body {
+            .body {
                 margin: 0;
                 padding: 0;
-                font-family: 'Poppins', sans-serif; /* Áp dụng Poppins */
-                background: #f0f2f5; /* Nền xám nhạt cho toàn bộ trang */
+                font-family: 'Poppins', sans-serif;
+                background: #f0f2f5;
             }
 
-            h3{
-                font-family: 'Poppins', sans-serif;
-            }
             .header {
+                background-color: #1c1c1c;
+                color: white;
+                padding: 15px 35px;
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
-                padding: 20px 20px;
-                background: #2c2c2c;
             }
 
             .header .logo {
@@ -32,35 +32,49 @@
             .header .nav {
                 display: flex;
                 gap: 20px;
+                align-items: center;
             }
 
             .header .nav a {
-                color: #ccc;
+                color: white;
                 text-decoration: none;
-                font-size: 16px;
-                font-weight: 400;
+                font-weight: 500;
+                padding: 7px 17px;
+                border-radius: 20px;
             }
 
             .header .nav a:hover {
-                color: #fff;
+                background-color: rgba(255,255,255,0.1);
             }
 
-            .header .user {
+            .user-profile {
+                position: relative;
+            }
+            .user-profile .name {
+                cursor: pointer;
                 display: flex;
                 align-items: center;
                 gap: 10px;
+                background-color: #374151;
+                padding: 6px 12px;
+                border-radius: 20px;
             }
-
-            .header .user img {
-                width: 30px;
-                height: 30px;
-                border-radius: 50%;
+            .user-profile .user-box {
+                display: none;
+                position: absolute;
+                top: 45px;
+                right: 0;
+                background: #fff;
+                color: #000;
+                padding: 15px;
+                border-radius: 10px;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+                width: 200px;
+                z-index: 10;
             }
-
-            .header .user span {
-                font-weight: 400;
+            .user-profile:hover .user-box {
+                display: block;
             }
-
             .top-section {
                 background: #1a1a1a;
                 padding: 50px;
@@ -136,22 +150,42 @@
             }
         </style>
     </head>
-    <body>
+    <body class="body">
         <div class="header">
             <div class="logo">MAGIX</div>
             <div class="nav">
+                <a href="Dashboard">Dashboard</a>
+                <a href="View">Dashboard</a>
                 <a href="View">View</a>
-                <a href="Approval">Approval</a>
-                <a href="Create">Leaves</a> 
+                <a href="Create">Leaves</a>
+                <c:if test="${sessionScope.approvalAccess}">
+                    <a href="Approval">Approval</a>
+                </c:if>
+                <c:if test="${sessionScope.approvalAccess}">
+                    <a href="Agenda">Agenda</a>
+                </c:if>
             </div>
-            <div class="user">
-                <span>Andrew Niles</span>
+            <div class="user-profile">
+                <div class="name">
+                    <span>${sessionScope.user.userId}</span>
+                </div>
+                <div class="user-box">
+                    <p><strong>Username: </strong> ${sessionScope.user.username}</p>
+                    <p><strong>Role:</strong>
+                        <c:forEach var="r" items="${sessionScope.user.roles}" varStatus="loop">
+                            ${r.name} <c:if test="${!loop.last}">, </c:if>
+                        </c:forEach>
+                    </p>
+                    <p><a href="#">Logout</a></p>
+                </div>
             </div>
         </div>
 
         <div class="top-section">
             <div class="greeting">
-                Hello Andrew, <br>Good Morning
+                <p>Hello <label>${sessionScope.user.username}</label></p>
+                <label>Good Morning</label>
+
             </div>
         </div>
         <div class="main-content">
@@ -172,11 +206,22 @@
                         <p><span class="info-label">Reason:</span> ${lr.reason}</p>
                         <p><span class="info-label">From:</span> ${lr.from}</p>
                         <p><span class="info-label">To:</span> ${lr.to}</p>
-                        <p><span class="info-label">Created by:</span> ${lr.createdby.userId}</p>
-                        <p><span class="info-label">Leave Type:</span> ${lr.leaveType.leaveTypeID}</p>
+                        <p><span class="info-label">Create By:</span> ${lr.createdby.userId}
+
+                        <p><span class="info-label">Leave Type:</span>
+
+                            <c:forEach var="ltype" items="${leaveTypes}">
+                            <c:if test="${ltype.leaveTypeID == lr.leaveType.leaveTypeID}">
+                                ${ltype.leaveTypeName}
+                            </c:if>
+                        </c:forEach>
+                        </p>
+
+
                         <div class="action-buttons">
                             <form method="post" action="View">
-                                <input type="hidden" name="lrid" value="${lr.lrid}" />
+                                <%--<input type="hidden" name="update" value="${lr.lrid}" />--%>
+                                <input type="hidden" name="lrid" value="${lr.lrid}">
                                 <input type="hidden" name="action" value="update" />
                                 <button class="update-btn" type="submit">Update</button>
                             </form>
